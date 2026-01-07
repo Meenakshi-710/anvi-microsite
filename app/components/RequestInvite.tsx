@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Accordion from './Accordion';
 
 interface RequestInviteProps {
@@ -11,11 +11,33 @@ interface RequestInviteProps {
 
 export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = false }: RequestInviteProps) {
   const [countryCode, setCountryCode] = useState('+91');
-  const [isCountryCodeOpen, setIsCountryCodeOpen] = useState(false);
   const [country, setCountry] = useState('');
-  const [isCountryOpen, setIsCountryOpen] = useState(false);
-  const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [role, setRole] = useState('');
+
+  // Single state to track which dropdown is currently open
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const toggleDropdown = (name: string) => {
+    setActiveDropdown(activeDropdown === name ? null : name);
+  };
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (activeDropdown && !target.closest('.dropdown-container')) {
+        setActiveDropdown(null);
+      }
+    };
+
+    if (activeDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeDropdown]);
 
   return (
     <Accordion title="Request an Invite" isOpen={isOpen} onToggle={onToggle}>
@@ -79,15 +101,15 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               WhatsApp
             </label>
             <div className="flex gap-4">
-              <div className="relative w-24">
+              <div className="relative w-24 dropdown-container">
                 <button
                   type="button"
-                  onClick={() => setIsCountryCodeOpen(!isCountryCodeOpen)}
+                  onClick={() => toggleDropdown('countryCode')}
                   className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
                 >
                   <span className="text-black">{countryCode}</span>
                   <svg
-                    className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${isCountryCodeOpen ? 'rotate-180' : ''}`}
+                    className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -95,7 +117,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                {isCountryCodeOpen && (
+                {activeDropdown === 'countryCode' && (
                   <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2">
                     {['+91', '+1', '+44'].map((code) => (
                       <button
@@ -103,7 +125,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
                         type="button"
                         onClick={() => {
                           setCountryCode(code);
-                          setIsCountryCodeOpen(false);
+                          setActiveDropdown(null);
                         }}
                         className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                       >
@@ -142,20 +164,20 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
 
           {/* Country */}
           {/* Country */}
-          <div className="relative">
+          <div className="relative dropdown-container">
             <label htmlFor="country" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
               Country
             </label>
             <button
               type="button"
-              onClick={() => setIsCountryOpen(!isCountryOpen)}
+              onClick={() => toggleDropdown('country')}
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
             >
               <span className={country ? 'text-black' : 'text-gray-500'}>
                 {country || 'Select one'}
               </span>
               <svg
-                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${isCountryOpen ? 'rotate-180' : ''}`}
+                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'country' ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -164,7 +186,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               </svg>
             </button>
 
-            {isCountryOpen && (
+            {activeDropdown === 'country' && (
               <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2 max-h-60 overflow-y-auto">
                 {['India', 'United States', 'United Kingdom'].map((c) => (
                   <button
@@ -172,7 +194,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
                     type="button"
                     onClick={() => {
                       setCountry(c);
-                      setIsCountryOpen(false);
+                      setActiveDropdown(null);
                     }}
                     className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                   >
@@ -186,20 +208,20 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
 
           {/* Role / Designation */}
           {/* Role / Designation */}
-          <div className="relative">
+          <div className="relative dropdown-container">
             <label htmlFor="role" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
               Role / Designation
             </label>
             <button
               type="button"
-              onClick={() => setIsRoleOpen(!isRoleOpen)}
+              onClick={() => toggleDropdown('role')}
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
             >
               <span className={role ? 'text-black' : 'text-gray-500'}>
                 {role || 'Select one'}
               </span>
               <svg
-                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${isRoleOpen ? 'rotate-180' : ''}`}
+                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'role' ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -208,7 +230,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               </svg>
             </button>
 
-            {isRoleOpen && (
+            {activeDropdown === 'role' && (
               <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2">
                 {[
                   'Minister / Secretry',
@@ -227,7 +249,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
                     type="button"
                     onClick={() => {
                       setRole(option);
-                      setIsRoleOpen(false);
+                      setActiveDropdown(null);
                     }}
                     className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                   >
