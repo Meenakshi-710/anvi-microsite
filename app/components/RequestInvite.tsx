@@ -184,7 +184,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
 
         {/* Duplicate Error Message */}
         {duplicateError && (
-          <div className="bg-purple-50 border border-red-200 rounded-lg p-4 mb-4">
+          <div className="bg-purple-50 border border-[#7921B1] rounded-lg p-4 mb-4">
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-[#7921B1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -510,7 +510,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
         </form>
       </div>
 
-      {/* Injected Style for Scrollbar */}
+      {/* Injected Style for Scrollbar and Mobile Input Fixes */}
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 5px;
@@ -524,6 +524,20 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #999;
+        }
+        
+        /* Hide datalist arrows on mobile */
+        @media (max-width: 768px) {
+          input[list] {
+            background-image: none !important;
+            background-repeat: no-repeat !important;
+            background-position: right !important;
+            padding-right: 12px !important;
+          }
+          
+          input[list]::-webkit-calendar-picker-indicator {
+            display: none !important;
+          }
         }
       `}</style>
     </Accordion>

@@ -237,7 +237,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                     {/* Duplicate Error Message */}
                     {duplicateError && (
-                        <div className="bg-purple-50 border border-red-200 rounded-lg p-4 mb-6">
+                        <div className="bg-purple-50 border border-[#7921B1] rounded-lg p-4 mb-6">
                             <div className="flex items-start gap-2">
                                 <svg className="w-5 h-5 text-[#7921B1] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -274,7 +274,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                                 <datalist id="firstName-suggestions">
                                     {suggestions.firstName?.map(s => <option key={s} value={s} />)}
@@ -292,7 +292,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                                 <datalist id="lastName-suggestions">
                                     {suggestions.lastName?.map(s => <option key={s} value={s} />)}
@@ -310,7 +310,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
                                     placeholder="Enter your Organisation"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                                 <datalist id="organisation-suggestions">
                                     {suggestions.organisation?.map(s => <option key={s} value={s} />)}
@@ -323,7 +323,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('titleRole')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none rounded-sm"
+                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={titleRole ? 'text-black' : 'text-[#ADADAD]'}>
                                             {titleRole || 'Select one'}
@@ -356,7 +356,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('country')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none rounded-sm"
+                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={country ? 'text-black' : 'text-[#ADADAD]'}>
                                             {country || 'Select one'}
@@ -409,7 +409,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     list="email-suggestions"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 rounded-sm placeholder:text-[#ADADAD]"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
                                 />
                                 <datalist id="email-suggestions">
                                     {suggestions.email?.map(s => <option key={s} value={s} />)}
@@ -423,7 +423,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         <button
                                             type="button"
                                             onClick={() => toggleDropdown('countryCode')}
-                                            className="w-full px-2 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none rounded-sm"
+                                            className="w-full px-2 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
                                         >
                                             <span className="text-black">{countryCode}</span>
                                             <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`} size={14} />
@@ -472,7 +472,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
-                                        className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none rounded-sm"
+                                        className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
                                     />
                                     <datalist id="whatsapp-suggestions">
                                         {suggestions.whatsapp?.map(s => <option key={s} value={s} />)}
@@ -666,6 +666,20 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                     background: #D1D1D6;
+                }
+                
+                /* Hide datalist arrows on mobile */
+                @media (max-width: 768px) {
+                    input[list] {
+                        background-image: none !important;
+                        background-repeat: no-repeat !important;
+                        background-position: right !important;
+                        padding-right: 12px !important;
+                    }
+                    
+                    input[list]::-webkit-calendar-picker-indicator {
+                        display: none !important;
+                    }
                 }
             `}</style>
         </div>
