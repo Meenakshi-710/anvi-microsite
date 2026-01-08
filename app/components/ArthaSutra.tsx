@@ -11,7 +11,7 @@ interface ArthaSutraProps {
 
 export default function ArthaSutra({ isOpen = true, onToggle, onRequestInvite, onRequestDialogue }: ArthaSutraProps) {
   return (
-    <div className="border-b border-purple-600">
+    <div className="border-b border-[#7921B1]">
       <div className="flex items-center justify-between">
         <h1 className="text-[#7B2CBF] text-[19px] font-semibold font-helvetica leading-[14.9px]">
           ARTHA SUTRA

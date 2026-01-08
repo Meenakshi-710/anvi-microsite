@@ -247,9 +247,10 @@ interface ProgramProps {
   onToggle?: () => void;
   selectedSessions: Set<string>;
   onSessionToggle: (sessionId: string) => void;
+  onSubmitInterest?: () => void;
 }
 
-export default function Program({ isOpen, onToggle, selectedSessions, onSessionToggle }: ProgramProps) {
+export default function Program({ isOpen, onToggle, selectedSessions, onSessionToggle, onSubmitInterest }: ProgramProps) {
 
   const isSubmitEnabled = selectedSessions.size > 0;
 
@@ -359,6 +360,7 @@ export default function Program({ isOpen, onToggle, selectedSessions, onSessionT
 
             {/* Button */}
             <button
+              onClick={onSubmitInterest}
               disabled={!isSubmitEnabled}
               className={`w-full text-white py-4 font-semibold text-[16px] transition-colors font-noto-sans ${isSubmitEnabled
                 ? 'bg-[#7921B1] hover:bg-[#6a1d9b] shadow-sm'

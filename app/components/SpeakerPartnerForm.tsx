@@ -1,7 +1,11 @@
 'use client';
 
-import { X, ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { X, ChevronDown, Search } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { COUNTRIES } from '../constants/countries';
+import { saveFieldSuggestion, getFieldSuggestions } from '../utils/form-utils';
+import { submitToGoogleSheets } from '../utils/google-sheets';
+
 
 interface SpeakerPartnerFormProps {
     isOpen: boolean;
@@ -23,12 +27,35 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
     const [globalRelevance, setGlobalRelevance] = useState<string[]>([]);
     const [contribution, setContribution] = useState('');
     const [pilotInterest, setPilotInterest] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+
+
+    const [suggestions, setSuggestions] = useState<Record<string, string[]>>({});
 
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const toggleDropdown = (name: string) => {
+        if (activeDropdown !== name) {
+            setSearchQuery('');
+        }
         setActiveDropdown(activeDropdown === name ? null : name);
     };
+
+    const filteredCountries = useMemo(() => {
+        return COUNTRIES.filter(c =>
+            c.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery]);
+
+    const filteredDialCodes = useMemo(() => {
+        return COUNTRIES.filter(c =>
+            c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            c.dial_code.includes(searchQuery)
+        );
+    }, [searchQuery]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -47,16 +74,32 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
         };
     }, [activeDropdown]);
 
+    // Load suggestions on mount
+    useEffect(() => {
+        if (isOpen) {
+            const fields = ['firstName', 'lastName', 'email', 'organisation', 'whatsapp'];
+            const loadedSuggestions: Record<string, string[]> = {};
+            fields.forEach(f => {
+                loadedSuggestions[f] = getFieldSuggestions(f);
+            });
+            setSuggestions(loadedSuggestions);
+        }
+    }, [isOpen]);
+
     const rolesList = [
-        'Minister / Secretry',
-        'Regulator / Central Bank Representative / Policy Advisor',
-        'Founder / Managing Partner',
-        'General Partner (GP) / Limited Partner (LP)',
-        'Family Office Representative',
-        'Senior Leadership (CXO / Board Member / MD / EVP / SVP)',
-        'CTO / Chief Architect',
-        'Development Finance / Grant Agencies Representative',
-        'Policy Think Tank Member / Academic / Researcher',
+        'Founder / Co-Founder',
+        'CEO / Managing Director',
+        'Board Member / Investor',
+        'Partner (VC / PE / Fund / Firm)',
+        'CXO (CFO / CIO / CTO / COO / CRO)',
+        'Senior Government Official',
+        'Regulator / Policy Maker',
+        'Banker / Financial Institution Leader',
+        'Commodity / Trade Finance Professional',
+        'Technology / AI Leader',
+        'Academic / Researcher',
+        'Advisor / Consultant',
+        'Media / Journalist',
         'Other'
     ];
 
@@ -76,7 +119,32 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
         }
     };
 
-    const isFormEmpty = !firstName.trim() && !lastName.trim() && !organisation.trim();
+    const isFormInvalid = !firstName.trim() ||
+        !lastName.trim() ||
+        !organisation.trim() ||
+        !titleRole ||
+        !country ||
+        !email.trim() ||
+        !phoneNumber.trim();
+
+    // Clear form when closed
+    useEffect(() => {
+        if (!isOpen) {
+            setFirstName('');
+            setLastName('');
+            setOrganisation('');
+            setPhoneNumber('');
+            setEmail('');
+            setTitleRole('');
+            setCountry('');
+            setEngagementType('');
+            setIndiaRelevance([]);
+            setGlobalRelevance([]);
+            setContribution('');
+            setPilotInterest('');
+            setIsSubmitted(false);
+        }
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen) {
@@ -89,6 +157,45 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
         };
     }, [isOpen]);
 
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        // Save suggestions
+        saveFieldSuggestion('firstName', firstName);
+        saveFieldSuggestion('lastName', lastName);
+        saveFieldSuggestion('email', email);
+        saveFieldSuggestion('organisation', organisation);
+        saveFieldSuggestion('whatsapp', phoneNumber);
+
+        try {
+            await submitToGoogleSheets({
+                formType: 'Speaker / Partner Application',
+                firstName,
+                lastName,
+                email,
+                organisation,
+                countryCode,
+                phoneNumber,
+                country,
+                titleRole,
+                additionalDetails: {
+                    engagementType,
+                    indiaRelevance,
+                    globalRelevance,
+                    contribution,
+                    pilotInterest
+                }
+            });
+            setIsSubmitted(true);
+            onSubmit();
+        } catch (error) {
+
+            console.error('Submission failed', error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+
     if (!isOpen) return null;
 
     return (
@@ -97,7 +204,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
             onClick={onClose}
         >
             <div
-                className="relative w-[calc(100%-48px)] max-w-[420px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100vh-57px)]"
+                className="relative w-[calc(100%-48px)] max-w-[420px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100dvh-70px)] mb-4"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="absolute top-4 right-4 z-10">
@@ -115,7 +222,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                         Speaker / Partner Application
                     </h2>
 
-                    <form className="space-y-8 pb-10">
+                    <form className="space-y-8 pb-16">
                         {/* Section: Identity */}
                         <div className="space-y-6">
                             <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase leading-[20px]">Identity</h3>
@@ -124,33 +231,54 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Full Name *</label>
                                 <input
                                     type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    autoComplete="given-name"
+                                    list="firstName-suggestions"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
-                                    className="w-full h-[44px] border border-[#E4E4E7] px-4 text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
+                                <datalist id="firstName-suggestions">
+                                    {suggestions.firstName?.map(s => <option key={s} value={s} />)}
+                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Last Name *</label>
                                 <input
                                     type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    autoComplete="family-name"
+                                    list="lastName-suggestions"
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
-                                    className="w-full h-[44px] border border-[#E4E4E7] px-4 text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
+                                <datalist id="lastName-suggestions">
+                                    {suggestions.lastName?.map(s => <option key={s} value={s} />)}
+                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Organisation *</label>
                                 <input
                                     type="text"
+                                    id="organisation"
+                                    name="organisation"
+                                    autoComplete="organization"
+                                    list="organisation-suggestions"
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
-                                    placeholder="WEF"
-                                    className="w-full h-[44px] border border-[#E4E4E7] px-4 text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    placeholder="Enter your Organisation"
+                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
+                                <datalist id="organisation-suggestions">
+                                    {suggestions.organisation?.map(s => <option key={s} value={s} />)}
+                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
@@ -159,7 +287,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('titleRole')}
-                                        className="w-full h-[44px] border border-[#E4E4E7] px-4 pr-3 text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={titleRole ? 'text-black' : 'text-[#ADADAD]'}>
                                             {titleRole || 'Select one'}
@@ -167,7 +295,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'titleRole' ? 'rotate-180' : ''}`} size={18} />
                                     </button>
                                     {activeDropdown === 'titleRole' && (
-                                        <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2 max-h-60 overflow-y-auto">
+                                        <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-[220px] overflow-y-auto custom-scrollbar">
                                             {rolesList.map((option) => (
                                                 <button
                                                     key={option}
@@ -192,7 +320,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('country')}
-                                        className="w-full h-[44px] border border-[#E4E4E7] px-4 pr-3 text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={country ? 'text-black' : 'text-[#ADADAD]'}>
                                             {country || 'Select one'}
@@ -200,20 +328,36 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'country' ? 'rotate-180' : ''}`} size={18} />
                                     </button>
                                     {activeDropdown === 'country' && (
-                                        <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2 max-h-60 overflow-y-auto">
-                                            {['India', 'United States', 'United Kingdom', 'Switzerland', 'UAE'].map((c) => (
+                                        <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-60 overflow-y-auto custom-scrollbar">
+                                            <div className="px-4 pb-2 sticky top-0 bg-white">
+                                                <div className="relative">
+                                                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Search country..."
+                                                        value={searchQuery}
+                                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                                        className="w-full pl-8 pr-3 py-2 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
+                                                        autoFocus
+                                                    />
+                                                </div>
+                                            </div>
+                                            {filteredCountries.map((c, idx) => (
                                                 <button
-                                                    key={c}
+                                                    key={`${c.name}-${idx}`}
                                                     type="button"
                                                     onClick={() => {
-                                                        setCountry(c);
+                                                        setCountry(c.name);
                                                         setActiveDropdown(null);
                                                     }}
                                                     className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                                                 >
-                                                    {c}
+                                                    {c.name}
                                                 </button>
                                             ))}
+                                            {filteredCountries.length === 0 && (
+                                                <div className="px-4 py-3 text-[15px] text-gray-400">No results found</div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -223,49 +367,80 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Email *</label>
                                 <input
                                     type="email"
+                                    id="email"
+                                    name="email"
+                                    autoComplete="email"
+                                    list="email-suggestions"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full h-[44px] border border-[#E4E4E7] px-4 text-[13px] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] focus:border-[#7921B1] outline-none mt-2"
                                 />
+                                <datalist id="email-suggestions">
+                                    {suggestions.email?.map(s => <option key={s} value={s} />)}
+                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
                                 <div className="flex gap-2 mt-2">
-                                    <div className="relative min-w-[80px] dropdown-container">
+                                    <div className="relative min-w-[100px] dropdown-container">
                                         <button
                                             type="button"
                                             onClick={() => toggleDropdown('countryCode')}
-                                            className="w-full h-[44px] border border-[#E4E4E7] px-3 text-[13px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
+                                            className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
                                         >
                                             <span className="text-black">{countryCode}</span>
                                             <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`} size={14} />
                                         </button>
                                         {activeDropdown === 'countryCode' && (
-                                            <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2">
-                                                {['+91', '+1', '+44', '+41', '+971'].map((code) => (
+                                            <div className="absolute z-50 left-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 w-[240px] max-h-60 overflow-y-auto custom-scrollbar">
+                                                <div className="px-3 pb-2 sticky top-0 bg-white">
+                                                    <div className="relative">
+                                                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Search..."
+                                                            value={searchQuery}
+                                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                                            className="w-full pl-8 pr-2 py-1.5 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
+                                                            autoFocus
+                                                        />
+                                                    </div>
+                                                </div>
+                                                {filteredDialCodes.map((c, idx) => (
                                                     <button
-                                                        key={code}
+                                                        key={`${c.dial_code}-${idx}`}
                                                         type="button"
                                                         onClick={() => {
-                                                            setCountryCode(code);
+                                                            setCountryCode(c.dial_code);
                                                             setActiveDropdown(null);
                                                         }}
-                                                        className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                                                        className="w-full text-left px-4 py-2.5 text-[14px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans flex justify-between gap-2"
                                                     >
-                                                        {code}
+                                                        <span className="truncate">{c.name}</span>
+                                                        <span className="text-gray-400 shrink-0">{c.dial_code}</span>
                                                     </button>
                                                 ))}
+                                                {filteredDialCodes.length === 0 && (
+                                                    <div className="px-4 py-2 text-[13px] text-gray-400">No results found</div>
+                                                )}
                                             </div>
                                         )}
                                     </div>
                                     <input
                                         type="tel"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        autoComplete="tel-national"
+                                        list="whatsapp-suggestions"
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
-                                        className="flex-1 h-[44px] border border-[#E4E4E7] px-4 text-[13px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
+                                        className="flex-1 py-2 border-b border-[#E4E4E7] text-[13px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
                                     />
+                                    <datalist id="whatsapp-suggestions">
+                                        {suggestions.whatsapp?.map(s => <option key={s} value={s} />)}
+                                    </datalist>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +452,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                 <button
                                     type="button"
                                     onClick={() => toggleDropdown('engagementType')}
-                                    className="w-full h-[44px] border border-[#E4E4E7] px-4 pr-3 text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
+                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
                                 >
                                     <span className={engagementType ? 'text-black' : 'text-[#ADADAD]'}>
                                         {engagementType || 'Select one'}
@@ -285,7 +460,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'engagementType' ? 'rotate-180' : ''}`} size={18} />
                                 </button>
                                 {activeDropdown === 'engagementType' && (
-                                    <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-gray-100 py-2 font-noto-sans">
+                                    <div className="absolute z-50 left-0 right-0 top-0 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-[220px] overflow-y-auto custom-scrollbar font-noto-sans">
                                         {engagementTypes.map((option) => (
                                             <button
                                                 key={option}
@@ -380,7 +555,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={contribution}
                                     onChange={(e) => setContribution(e.target.value.slice(0, 400))}
                                     placeholder="We can deploy X in Y geography within Z months..."
-                                    className="w-full h-[120px] border border-[#E4E4E7] p-4 text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none resize-none font-noto-sans"
+                                    className="w-full min-h-[100px] py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none resize-none font-noto-sans"
                                 ></textarea>
                                 <div className="flex justify-between">
                                     <span className="text-[13px] font-noto-sans text-[#ADADAD] block">{contribution.length}/400 characters</span>
@@ -418,17 +593,26 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         <button
                             type="button"
-                            disabled={isFormEmpty}
-                            className={`w-full h-[54px] text-white flex justify-center items-center text-[16px] font-semibold font-noto-sans transition-colors ${isFormEmpty
+                            disabled={isFormInvalid || isSubmitting}
+                            className={`w-full h-[54px] text-white flex justify-center items-center text-[16px] font-semibold font-noto-sans transition-colors ${isFormInvalid || isSubmitting
                                 ? 'bg-[#E4E4E7] text-[#ADADAD] cursor-not-allowed'
                                 : 'bg-[#7921B1] hover:bg-[#621B91]'
                                 }`}
-                            onClick={() => {
-                                onSubmit();
-                            }}
+                            onClick={handleSubmit}
                         >
-                            Submit Application
+                            {isSubmitting ? (
+                                <span className="flex items-center gap-2">
+                                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Submitting...
+                                </span>
+                            ) : (
+                                'Submit Application'
+                            )}
                         </button>
+
                     </form>
                 </div>
             </div>

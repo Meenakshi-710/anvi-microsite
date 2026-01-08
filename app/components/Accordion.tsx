@@ -25,7 +25,7 @@ export default function Accordion({ title, children, defaultOpen = false, isOpen
   };
 
   return (
-    <div className="border-b border-purple-600">
+    <div className="border-b border-[#7921B1]">
       <button
         onClick={handleToggle}
         className="w-full flex items-center justify-between py-4 text-left active:opacity-80 transition-opacity h-auto"

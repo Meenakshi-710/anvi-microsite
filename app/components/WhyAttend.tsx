@@ -9,7 +9,7 @@ interface WhyAttendProps {
 
 export default function WhyAttend({ isOpen = true, onToggle }: WhyAttendProps) {
   return (
-    <div className="border-b border-purple-600">
+    <div className="border-b border-[#7921B1]">
       <div className="flex items-center justify-between py-4">
         <h2 className={`${isOpen ? 'text-[26px] font-semibold' : 'text-[16px] font-regular'} text-black flex-1 pr-2`}>
           Why attend

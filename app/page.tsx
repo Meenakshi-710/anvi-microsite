@@ -22,18 +22,26 @@ export default function Home() {
   const [dialogueStep, setDialogueStep] = useState<'none' | 'intro' | 'form' | 'confirmation'>('none');
   const [speakerStep, setSpeakerStep] = useState<'none' | 'intro' | 'form' | 'confirmation'>('none');
 
+  const scrollToSection = (id: string) => {
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
   const handleToggle = (section: string) => {
-    setActiveSection(activeSection === section ? null : section);
+    const isOpening = activeSection !== section;
+    setActiveSection(isOpening ? section : null);
+    if (isOpening) {
+      scrollToSection(`${section}-section`);
+    }
   };
 
   const handleRequestInvite = () => {
     setActiveSection('program');
-    setTimeout(() => {
-      const programElement = document.getElementById('program-section');
-      if (programElement) {
-        programElement.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
+    scrollToSection('program-section');
   };
 
   const handleSessionToggle = (sessionId: string) => {
@@ -48,47 +56,69 @@ export default function Home() {
     });
   };
 
+  const handleSubmitInterest = () => {
+    setActiveSection('requestinvite');
+    scrollToSection('requestinvite-section');
+  };
+
+  const handleSelectRoundtables = () => {
+    setActiveSection('program');
+    scrollToSection('program-section');
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <div className="w-full mx-auto">
         <Header isDialogueOpen={dialogueStep !== 'none'} />
 
-        <main className="px-[27px]">
-          <ArthaSutra
-            isOpen={activeSection === 'arthasutra'}
-            onToggle={() => handleToggle('arthasutra')}
-            onRequestInvite={handleRequestInvite}
-            onRequestDialogue={() => setDialogueStep('intro')}
-          />
-          <WhyAttend
-            isOpen={activeSection === 'whyattend'}
-            onToggle={() => handleToggle('whyattend')}
-          />
-          <div id="program-section">
+        <main className="py-3 px-6">
+          <div id="arthasutra-section" className="scroll-mt-16">
+            <ArthaSutra
+              isOpen={activeSection === 'arthasutra'}
+              onToggle={() => handleToggle('arthasutra')}
+              onRequestInvite={handleRequestInvite}
+              onRequestDialogue={() => setDialogueStep('intro')}
+            />
+          </div>
+          <div id="whyattend-section" className="scroll-mt-16">
+            <WhyAttend
+              isOpen={activeSection === 'whyattend'}
+              onToggle={() => handleToggle('whyattend')}
+            />
+          </div>
+          <div id="program-section" className="scroll-mt-16">
             <Program
               isOpen={activeSection === 'program'}
               onToggle={() => handleToggle('program')}
               selectedSessions={selectedSessions}
               onSessionToggle={handleSessionToggle}
+              onSubmitInterest={handleSubmitInterest}
             />
           </div>
-          <RequestInvite
-            isOpen={activeSection === 'requestinvite'}
-            onToggle={() => handleToggle('requestinvite')}
-            hasSelectedSessions={selectedSessions.size > 0}
-          />
-          <ANVIIndia
-            isOpen={activeSection === 'anviindia'}
-            onToggle={() => handleToggle('anviindia')}
-            onRequestDialogue={() => setDialogueStep('intro')}
-            onRequestSpeaker={() => setSpeakerStep('intro')}
-          />
-          <ANVIGlobal
-            isOpen={activeSection === 'anviglobal'}
-            onToggle={() => handleToggle('anviglobal')}
-            onRequestDialogue={() => setDialogueStep('intro')}
-            onRequestSpeaker={() => setSpeakerStep('intro')}
-          />
+          <div id="requestinvite-section" className="scroll-mt-16">
+            <RequestInvite
+              isOpen={activeSection === 'requestinvite'}
+              onToggle={() => handleToggle('requestinvite')}
+              hasSelectedSessions={selectedSessions.size > 0}
+              onSelectRoundtables={handleSelectRoundtables}
+            />
+          </div>
+          <div id="anviindia-section" className="scroll-mt-16">
+            <ANVIIndia
+              isOpen={activeSection === 'anviindia'}
+              onToggle={() => handleToggle('anviindia')}
+              onRequestDialogue={() => setDialogueStep('intro')}
+              onRequestSpeaker={() => setSpeakerStep('intro')}
+            />
+          </div>
+          <div id="anviglobal-section" className="scroll-mt-16">
+            <ANVIGlobal
+              isOpen={activeSection === 'anviglobal'}
+              onToggle={() => handleToggle('anviglobal')}
+              onRequestDialogue={() => setDialogueStep('intro')}
+              onRequestSpeaker={() => setSpeakerStep('intro')}
+            />
+          </div>
         </main>
 
         <Footer />
