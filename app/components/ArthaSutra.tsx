@@ -12,18 +12,18 @@ interface ArthaSutraProps {
 export default function ArthaSutra({ isOpen = true, onToggle, onRequestInvite, onRequestDialogue }: ArthaSutraProps) {
   return (
     <div className="border-b border-[#7921B1]">
-      <div className="flex items-center justify-between">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between text-left active:opacity-80 transition-opacity h-auto"
+        aria-label={isOpen ? 'Collapse' : 'Expand'}
+      >
         <h1 className="text-[#7B2CBF] text-[19px] font-semibold font-helvetica leading-[14.9px]">
           ARTHA SUTRA
         </h1>
-        <button
-          onClick={onToggle}
-          className="text-[#7921B1] text-2xl font-light active:opacity-80 transition-opacity min-w-[44px] h-auto flex items-center justify-end"
-          aria-label={isOpen ? 'Collapse' : 'Expand'}
-        >
+        <span className="text-[#7921B1] text-2xl font-light min-w-[44px] flex items-center justify-end">
           {isOpen ? '−' : '+'}
-        </button>
-      </div>
+        </span>
+      </button>
 
       <div className="pb-2 space-y-2">
         <p className="text-[#7B2CBF] text-[10px] leading-[8px] font-bold">
