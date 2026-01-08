@@ -20,3 +20,50 @@ export const getFieldSuggestions = (fieldName: string): string[] => {
     }
     return [];
 };
+
+/**
+ * Check if a person (identified by firstName + lastName) has already submitted this form type
+ */
+export const isDuplicateSubmission = (formType: string, firstName: string, lastName: string): boolean => {
+    if (typeof window === 'undefined') return false;
+    if (!firstName.trim() || !lastName.trim()) return false;
+
+    const key = `anvi_submitted_${formType}`;
+    const submitted = getSubmittedNames(key);
+    const fullName = `${firstName.trim()} ${lastName.trim()}`.toLowerCase();
+    
+    return submitted.some(name => name.toLowerCase() === fullName);
+};
+
+/**
+ * Record a submitted name for a form type to prevent duplicates
+ */
+export const recordSubmission = (formType: string, firstName: string, lastName: string) => {
+    if (typeof window === 'undefined') return;
+    if (!firstName.trim() || !lastName.trim()) return;
+
+    const key = `anvi_submitted_${formType}`;
+    const submitted = getSubmittedNames(key);
+    const fullName = `${firstName.trim()} ${lastName.trim()}`;
+    
+    if (!submitted.some(name => name.toLowerCase() === fullName.toLowerCase())) {
+        const updated = [fullName, ...submitted].slice(0, 100); // Keep last 100 submissions
+        localStorage.setItem(key, JSON.stringify(updated));
+    }
+};
+
+/**
+ * Get list of submitted names for a form type
+ */
+export const getSubmittedNames = (key: string): string[] => {
+    if (typeof window === 'undefined') return [];
+    const stored = localStorage.getItem(key);
+    if (stored) {
+        try {
+            return JSON.parse(stored);
+        } catch (e) {
+            return [];
+        }
+    }
+    return [];
+};

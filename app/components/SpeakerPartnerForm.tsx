@@ -3,7 +3,7 @@
 import { X, ChevronDown, Search } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
 import { COUNTRIES } from '../constants/countries';
-import { saveFieldSuggestion, getFieldSuggestions } from '../utils/form-utils';
+import { saveFieldSuggestion, getFieldSuggestions, isDuplicateSubmission, recordSubmission } from '../utils/form-utils';
 import { submitToGoogleSheets } from '../utils/google-sheets';
 
 
@@ -29,6 +29,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
     const [pilotInterest, setPilotInterest] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [duplicateError, setDuplicateError] = useState(false);
 
 
 
@@ -143,6 +144,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
             setContribution('');
             setPilotInterest('');
             setIsSubmitted(false);
+            setDuplicateError(false);
         }
     }, [isOpen]);
 
@@ -158,7 +160,14 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
     }, [isOpen]);
 
     const handleSubmit = async () => {
+        // Check for duplicate submission
+        if (isDuplicateSubmission('Speaker / Partner Application', firstName, lastName)) {
+            setDuplicateError(true);
+            return;
+        }
+
         setIsSubmitting(true);
+        setDuplicateError(false);
         // Save suggestions
         saveFieldSuggestion('firstName', firstName);
         saveFieldSuggestion('lastName', lastName);
@@ -185,6 +194,10 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                     pilotInterest
                 }
             });
+            
+            // Record the submission to prevent duplicates
+            recordSubmission('Speaker / Partner Application', firstName, lastName);
+            
             setIsSubmitted(true);
             onSubmit();
         } catch (error) {
@@ -222,6 +235,29 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                         Speaker / Partner Application
                     </h2>
 
+                    {/* Duplicate Error Message */}
+                    {duplicateError && (
+                        <div className="bg-purple-50 border border-red-200 rounded-lg p-4 mb-6">
+                            <div className="flex items-start gap-2">
+                                <svg className="w-5 h-5 text-[#7921B1] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div className="flex-1">
+                                    <p className="text-[#7921B1] text-[13px] font-semibold">
+                                        An application with the name <strong>{firstName} {lastName}</strong> has already been submitted. Please use a different name or contact our team for assistance.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() => setDuplicateError(false)}
+                                        className="text-[#7921B1] text-[12px] mt-2 hover:underline"
+                                    >
+                                        Dismiss
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <form className="space-y-8 pb-16">
                         {/* Section: Identity */}
                         <div className="space-y-6">
@@ -238,7 +274,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
-                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
                                 />
                                 <datalist id="firstName-suggestions">
                                     {suggestions.firstName?.map(s => <option key={s} value={s} />)}
@@ -256,7 +292,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
-                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
                                 />
                                 <datalist id="lastName-suggestions">
                                     {suggestions.lastName?.map(s => <option key={s} value={s} />)}
@@ -274,7 +310,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
                                     placeholder="Enter your Organisation"
-                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2 rounded-sm"
                                 />
                                 <datalist id="organisation-suggestions">
                                     {suggestions.organisation?.map(s => <option key={s} value={s} />)}
@@ -287,7 +323,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('titleRole')}
-                                        className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none rounded-sm"
                                     >
                                         <span className={titleRole ? 'text-black' : 'text-[#ADADAD]'}>
                                             {titleRole || 'Select one'}
@@ -320,7 +356,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('country')}
-                                        className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none rounded-sm"
                                     >
                                         <span className={country ? 'text-black' : 'text-[#ADADAD]'}>
                                             {country || 'Select one'}
@@ -373,7 +409,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     list="email-suggestions"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full py-2 border-b border-[#E4E4E7] text-[13px] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 rounded-sm placeholder:text-[#ADADAD]"
                                 />
                                 <datalist id="email-suggestions">
                                     {suggestions.email?.map(s => <option key={s} value={s} />)}
@@ -383,11 +419,11 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                             <div className="space-y-1.5">
                                 <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
                                 <div className="flex gap-2 mt-2">
-                                    <div className="relative min-w-[100px] dropdown-container">
+                                    <div className="relative min-w-[80px] dropdown-container">
                                         <button
                                             type="button"
                                             onClick={() => toggleDropdown('countryCode')}
-                                            className="w-full py-2 border-b border-[#E4E4E7] text-[13px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
+                                            className="w-full px-2 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none rounded-sm"
                                         >
                                             <span className="text-black">{countryCode}</span>
                                             <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`} size={14} />
@@ -436,7 +472,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
-                                        className="flex-1 py-2 border-b border-[#E4E4E7] text-[13px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
+                                        className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none rounded-sm"
                                     />
                                     <datalist id="whatsapp-suggestions">
                                         {suggestions.whatsapp?.map(s => <option key={s} value={s} />)}

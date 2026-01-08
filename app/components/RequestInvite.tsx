@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Accordion from './Accordion';
 import { COUNTRIES } from '../constants/countries';
-import { saveFieldSuggestion, getFieldSuggestions } from '../utils/form-utils';
+import { saveFieldSuggestion, getFieldSuggestions, isDuplicateSubmission, recordSubmission } from '../utils/form-utils';
 import { submitToGoogleSheets } from '../utils/google-sheets';
 
 
@@ -23,6 +23,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
   const [role, setRole] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [duplicateError, setDuplicateError] = useState(false);
 
 
 
@@ -81,6 +82,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
       setCountry('');
       setRole('');
       setIsSubmitted(false);
+      setDuplicateError(false);
     }
   }, [isOpen]);
 
@@ -104,7 +106,14 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
       return;
     }
 
+    // Check for duplicate submission
+    if (isDuplicateSubmission('Request Invite', firstName, lastName)) {
+      setDuplicateError(true);
+      return;
+    }
+
     setIsSubmitting(true);
+    setDuplicateError(false);
     // Save suggestions
     saveFieldSuggestion('firstName', firstName);
     saveFieldSuggestion('lastName', lastName);
@@ -124,6 +133,9 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
         country,
         role
       });
+
+      // Record the submission to prevent duplicates
+      recordSubmission('Request Invite', firstName, lastName);
 
       setIsSubmitted(true);
       // Reset form fields after submission
@@ -156,12 +168,6 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
           <p className="text-[#897e7e] text-[15px] leading-[24px]">
             Thank you for your interest in ANVI. Our team personally reviews each application and will reach out with the next steps soon.
           </p>
-          <button
-            onClick={() => setIsSubmitted(false)}
-            className="text-[#7921B1] font-semibold text-[14px] hover:underline"
-          >
-            Submit another request
-          </button>
         </div>
       </Accordion>
     );
@@ -175,6 +181,27 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
         <p className="text-[#897e7e] text-[15px] leading-[24px]">
           Complete the form and our team will reach out with the next steps.
         </p>
+
+        {/* Duplicate Error Message */}
+        {duplicateError && (
+          <div className="bg-purple-50 border border-red-200 rounded-lg p-4 mb-4">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-[#7921B1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-[#7921B1] text-[13px] font-semibold">
+                An application with the name <strong>{firstName} {lastName}</strong> has already been submitted. Please use a different name or contact our team for assistance.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDuplicateError(false)}
+              className="text-[#7921B1] text-[12px] mt-2 hover:underline"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
 
         {/* Form */}
         <form className="space-y-4">
