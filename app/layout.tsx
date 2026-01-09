@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   title: "ANVI DAVOS 2026 | ARTHA SUTRA",
   description: "A private Davos-week leadership dialogue on designing an AI native new economic operating system where data becomes trust, inclusion becomes agency, and capital and commodities flow beyond traditional banks and borders.",
   icons: {
-    icon: '/Image.svg',
+    icon: '/Logo.jpg',
   },
 };
 
