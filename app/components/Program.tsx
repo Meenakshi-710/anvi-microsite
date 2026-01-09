@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Accordion from './Accordion';
 
-const PROGRAM_DATA = [
+export const PROGRAM_DATA = [
   {
     dayLabel: 'DAY 1',
     date: 'MONDAY, JANUARY 19',

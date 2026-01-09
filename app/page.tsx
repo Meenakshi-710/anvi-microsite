@@ -101,6 +101,7 @@ export default function Home() {
               onToggle={() => handleToggle('requestinvite')}
               hasSelectedSessions={selectedSessions.size > 0}
               onSelectRoundtables={handleSelectRoundtables}
+              selectedSessions={selectedSessions}
             />
           </div>
           <div id="anviindia-section" className="scroll-mt-16">

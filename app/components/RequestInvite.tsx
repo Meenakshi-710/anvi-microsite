@@ -3,6 +3,7 @@ import Accordion from './Accordion';
 import { COUNTRIES } from '../constants/countries';
 import { saveFieldSuggestion, getFieldSuggestions, isDuplicateSubmission, recordSubmission } from '../utils/form-utils';
 import { submitToGoogleSheets } from '../utils/google-sheets';
+import { PROGRAM_DATA } from './Program';
 
 
 interface RequestInviteProps {
@@ -10,9 +11,10 @@ interface RequestInviteProps {
   onToggle?: () => void;
   hasSelectedSessions?: boolean;
   onSelectRoundtables?: () => void;
+  selectedSessions?: Set<string>;
 }
 
-export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = false, onSelectRoundtables }: RequestInviteProps) {
+export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = false, onSelectRoundtables, selectedSessions }: RequestInviteProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -121,6 +123,24 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
     saveFieldSuggestion('organisation', organisation);
     saveFieldSuggestion('whatsapp', whatsapp);
 
+    // Prepare selected sessions data with full program details
+    const selectedSessionsData: Record<string, string> = {};
+    if (selectedSessions && selectedSessions.size > 0) {
+      selectedSessions.forEach(sessionId => {
+        const [dayIndex, sessionIndex] = sessionId.split('-').map(Number);
+        const dayData = PROGRAM_DATA[dayIndex];
+        const sessionData = dayData.sessions[sessionIndex];
+
+        // Create a descriptive key for each selected session
+        const sessionKey = `${dayData.dayLabel} (${dayData.date}) - ${sessionData.type}`;
+
+        // Create detailed value with session info
+        const sessionValue = `${sessionData.time} | ${sessionData.title}`;
+
+        selectedSessionsData[sessionKey] = sessionValue;
+      });
+    }
+
     try {
       await submitToGoogleSheets({
         formType: 'Request Invite',
@@ -131,7 +151,8 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
         countryCode,
         whatsapp,
         country,
-        role
+        role,
+        additionalDetails: selectedSessionsData
       });
 
       // Record the submission to prevent duplicates
