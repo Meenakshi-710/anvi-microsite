@@ -287,15 +287,11 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     id="firstName"
                                     name="firstName"
                                     autoComplete="given-name"
-                                    list="firstName-suggestions"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
                                     className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
-                                <datalist id="firstName-suggestions">
-                                    {suggestions.firstName?.map(s => <option key={s} value={s} />)}
-                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
@@ -305,15 +301,11 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     id="lastName"
                                     name="lastName"
                                     autoComplete="family-name"
-                                    list="lastName-suggestions"
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
                                     className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
-                                <datalist id="lastName-suggestions">
-                                    {suggestions.lastName?.map(s => <option key={s} value={s} />)}
-                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
@@ -323,15 +315,11 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     id="organisation"
                                     name="organisation"
                                     autoComplete="organization"
-                                    list="organisation-suggestions"
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
                                     placeholder="Enter your Organisation"
                                     className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
-                                <datalist id="organisation-suggestions">
-                                    {suggestions.organisation?.map(s => <option key={s} value={s} />)}
-                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
@@ -423,14 +411,10 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     id="email"
                                     name="email"
                                     autoComplete="email"
-                                    list="email-suggestions"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
                                 />
-                                <datalist id="email-suggestions">
-                                    {suggestions.email?.map(s => <option key={s} value={s} />)}
-                                </datalist>
                             </div>
 
                             <div className="space-y-1.5">
@@ -485,15 +469,11 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                         id="phoneNumber"
                                         name="phoneNumber"
                                         autoComplete="tel-national"
-                                        list="whatsapp-suggestions"
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
                                         className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
                                     />
-                                    <datalist id="whatsapp-suggestions">
-                                        {suggestions.whatsapp?.map(s => <option key={s} value={s} />)}
-                                    </datalist>
                                 </div>
                             </div>
                         </div>
@@ -771,18 +751,19 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                     background: #D1D1D6;
                 }
                 
-                /* Hide datalist arrows on mobile */
-                @media (max-width: 768px) {
-                    input[list] {
-                        background-image: none !important;
-                        background-repeat: no-repeat !important;
-                        background-position: right !important;
-                        padding-right: 12px !important;
-                    }
-                    
-                    input[list]::-webkit-calendar-picker-indicator {
-                        display: none !important;
-                    }
+                /* Hide input arrows on all devices */
+                input[type="number"] {
+                    -moz-appearance: textfield;
+                }
+                input[type="number"]::-webkit-outer-spin-button,
+                input[type="number"]::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                
+                /* Hide calendar picker indicators */
+                input::-webkit-calendar-picker-indicator {
+                    display: none !important;
                 }
             `}</style>
         </div>
