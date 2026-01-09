@@ -4,7 +4,7 @@
  * Replace the GOOGLE_SCRIPT_URL with your deployed Google Apps Script Web App URL.
  */
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzd7avpgNTBOF7VHGEyNWC16Wae-eDdofaIGXPNMb0tF41ahjcwetiXdfjH_syQiH3i/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6nQS0mzoggpy3oSnA_c80Z0pJkY5WClqVnnAj0VMGPFtkKZyHfu46JS9H9K0TkQtw/exec';
 
 export interface FormData {
     formType: string;
