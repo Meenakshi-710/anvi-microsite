@@ -215,16 +215,12 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               id="firstName"
               name="firstName"
               autoComplete="given-name"
-              list="firstName-suggestions"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Enter your First Name"
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
               required
             />
-            <datalist id="firstName-suggestions">
-              {suggestions.firstName?.map(s => <option key={s} value={s} />)}
-            </datalist>
           </div>
 
           {/* Last Name */}
@@ -237,16 +233,12 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               id="lastName"
               name="lastName"
               autoComplete="family-name"
-              list="lastName-suggestions"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Enter your Last name"
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
               required
             />
-            <datalist id="lastName-suggestions">
-              {suggestions.lastName?.map(s => <option key={s} value={s} />)}
-            </datalist>
           </div>
 
           {/* Work Email */}
@@ -259,16 +251,12 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               id="workEmail"
               name="workEmail"
               autoComplete="email"
-              list="email-suggestions"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your.email@company.com"
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
               required
             />
-            <datalist id="email-suggestions">
-              {suggestions.email?.map(s => <option key={s} value={s} />)}
-            </datalist>
           </div>
 
           {/* WhatsApp */}
@@ -331,16 +319,12 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
                 id="whatsapp"
                 name="whatsapp"
                 autoComplete="tel-national"
-                list="whatsapp-suggestions"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
                 placeholder="Enter your number"
                 className="flex-1 py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
                 required
               />
-              <datalist id="whatsapp-suggestions">
-                {suggestions.whatsapp?.map(s => <option key={s} value={s} />)}
-              </datalist>
             </div>
           </div>
 
@@ -354,16 +338,12 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
               id="organisation"
               name="organisation"
               autoComplete="organization"
-              list="organisation-suggestions"
               value={organisation}
               onChange={(e) => setOrganisation(e.target.value)}
               placeholder="Enter your Organisation"
               className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
               required
             />
-            <datalist id="organisation-suggestions">
-              {suggestions.organisation?.map(s => <option key={s} value={s} />)}
-            </datalist>
           </div>
 
           {/* Country */}
@@ -526,18 +506,19 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
           background: #999;
         }
         
-        /* Hide datalist arrows on mobile */
-        @media (max-width: 768px) {
-          input[list] {
-            background-image: none !important;
-            background-repeat: no-repeat !important;
-            background-position: right !important;
-            padding-right: 12px !important;
-          }
-          
-          input[list]::-webkit-calendar-picker-indicator {
-            display: none !important;
-          }
+        /* Hide input arrows on all devices */
+        input[type="number"] {
+          -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        
+        /* Hide datalist arrows */
+        input::-webkit-calendar-picker-indicator {
+          display: none !important;
         }
       `}</style>
     </Accordion>
