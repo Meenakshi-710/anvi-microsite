@@ -138,7 +138,11 @@ export default function ArthaSutra({ isOpen = true, onToggle, onRequestInvite, o
 
         {/* Collapsed state for desktop */}
         {!isOpen && (
-          <div className="py-4 pl-8 lg:pl-8">
+          <button
+            onClick={onToggle}
+            className="w-full text-left py-4 pl-8 lg:pl-8 cursor-pointer hover:bg-purple-50/30 transition-colors active:opacity-80"
+            aria-label="Expand"
+          >
             <h1 className="text-[#7B2CBF] text-[42px] font-bold font-helvetica mb-2">
               ARTHA SUTRA
             </h1>
@@ -148,7 +152,7 @@ export default function ArthaSutra({ isOpen = true, onToggle, onRequestInvite, o
             <p className="text-[#7B2CBF] text-[15px] font-regular">
               2026 THEME: BEYOND BANKS. BEYOND BORDERS.
             </p>
-          </div>
+          </button>
         )}
       </div>
     </div>
