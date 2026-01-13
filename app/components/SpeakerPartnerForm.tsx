@@ -194,10 +194,10 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                     pilotInterest
                 }
             });
-            
+
             // Record the submission to prevent duplicates
             recordSubmission('Speaker / Partner Application', firstName, lastName);
-            
+
             setIsSubmitted(true);
             onSubmit();
         } catch (error) {
@@ -217,7 +217,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
             onClick={onClose}
         >
             <div
-                className="relative w-[calc(100%-48px)] max-w-[420px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100dvh-70px)] mb-4"
+                className="relative w-[calc(100%-48px)] max-w-[520px] md:max-w-[720px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100dvh)]"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="absolute top-4 right-4 z-10">
@@ -230,8 +230,8 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto px-8 pt-12 custom-scrollbar" onScroll={() => setActiveDropdown(null)}>
-                    <h2 className="text-[#000000] text-[28px] font-semibold leading-[36px] font-noto-sans mb-8">
+                <div className="flex-1 overflow-y-auto px-6 md:px-12 pt-12 custom-scrollbar" onScroll={() => setActiveDropdown(null)}>
+                    <h2 className="text-[#000000] text-[24px] md:text-[32px] font-semibold leading-[32px] md:leading-[40px] font-noto-sans mb-6 md:mb-8">
                         Speaker / Partner Application
                     </h2>
 
@@ -258,13 +258,13 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                         </div>
                     )}
 
-                    <form className="space-y-8 pb-16">
+                    <form className="space-y-6 md:space-y-8 pb-12 md:pb-16">
                         {/* Section: Identity */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase leading-[20px]">Identity</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase leading-[20px]">Identity</h3>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Full Name *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Full Name *</label>
                                 <input
                                     type="text"
                                     id="firstName"
@@ -273,12 +273,12 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Last Name *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Last Name *</label>
                                 <input
                                     type="text"
                                     id="lastName"
@@ -287,12 +287,12 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Organisation *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Organisation *</label>
                                 <input
                                     type="text"
                                     id="organisation"
@@ -301,17 +301,17 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
                                     placeholder="Enter your Organisation"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Title / Role *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Title / Role *</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('titleRole')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={titleRole ? 'text-black' : 'text-[#ADADAD]'}>
                                             {titleRole || 'Select one'}
@@ -328,7 +328,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                                         setTitleRole(option);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                                                 >
                                                     {option}
                                                 </button>
@@ -339,12 +339,12 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Country *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Country *</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('country')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={country ? 'text-black' : 'text-[#ADADAD]'}>
                                             {country || 'Select one'}
@@ -374,7 +374,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                                         setCountry(c.name);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                                                 >
                                                     {c.name}
                                                 </button>
@@ -388,7 +388,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Email *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Email *</label>
                                 <input
                                     type="email"
                                     id="email"
@@ -396,18 +396,18 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                     autoComplete="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
                                 <div className="flex gap-2 mt-2">
                                     <div className="relative min-w-[80px] dropdown-container">
                                         <button
                                             type="button"
                                             onClick={() => toggleDropdown('countryCode')}
-                                            className="w-full px-2 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
+                                            className="w-full px-2 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
                                         >
                                             <span className="text-black">{countryCode}</span>
                                             <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`} size={14} />
@@ -455,7 +455,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
-                                        className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
+                                        className="flex-1 px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
                                     />
                                 </div>
                             </div>
@@ -463,7 +463,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         {/* Section: Engagement Type */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Engagement Type</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Engagement Type</h3>
                             <div className="relative mt-2 dropdown-container">
                                 <button
                                     type="button"
@@ -485,7 +485,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                                     setEngagementType(option);
                                                     setActiveDropdown(null);
                                                 }}
-                                                className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
+                                                className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
                                             >
                                                 {option}
                                             </button>
@@ -497,8 +497,8 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         {/* Section: Relevance to ANVI India */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Relevance to ANVI India</h3>
-                            <p className="text-[#333333] text-[14px] font-semibold font-noto-sans">(Select all that apply)</p>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Relevance to ANVI India</h3>
+                            <p className="text-[#333333] text-[13px] md:text-[14px] font-semibold font-noto-sans">(Select all that apply)</p>
                             <div className="space-y-3">
                                 {[
                                     'Financial Inclusion & AI Credit',
@@ -521,7 +521,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-[14px] text-[#333333] font-noto-sans">{item}</span>
+                                        <span className="text-[13px] md:text-[14px] text-[#333333] font-noto-sans">{item}</span>
                                     </label>
                                 ))}
                             </div>
@@ -529,8 +529,8 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         {/* Section: Relevance to ANVI Global */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Relevance to ANVI Global</h3>
-                            <p className="text-[#333333] text-[14px] font-semibold font-noto-sans">(Select all that apply)</p>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Relevance to ANVI Global</h3>
+                            <p className="text-[#333333] text-[13px] md:text-[14px] font-semibold font-noto-sans">(Select all that apply)</p>
                             <div className="space-y-6">
                                 {[
                                     { title: 'DeFi Meets Commodity Trade Finance & Physical Flows', desc: 'Commodity Trade Finance & Physical Flows' },
@@ -555,8 +555,8 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                             </svg>
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-[14px] text-[#333333] font-semibold font-noto-sans">{item.title}</span>
-                                            {item.desc && <span className="text-[12px] text-[#666666] font-noto-sans leading-tight mt-0.5">{item.desc}</span>}
+                                            <span className="text-[13px] md:text-[14px] text-[#333333] font-semibold font-noto-sans">{item.title}</span>
+                                            {item.desc && <span className="text-[11px] md:text-[12px] text-[#666666] font-noto-sans leading-tight mt-0.5">{item.desc}</span>}
                                         </div>
                                     </label>
                                 ))}
@@ -565,7 +565,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         {/* Section: Your Contribution */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Your Contribution</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Your Contribution</h3>
                             <div className="space-y-2">
                                 <textarea
                                     value={contribution}
@@ -581,7 +581,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
 
                         {/* Section: Pilot Interest */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Pilot Interest</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Pilot Interest</h3>
                             <div className="space-y-4">
                                 {[
                                     'Yes – India',
@@ -601,7 +601,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <span className="text-[14px] text-[#333333] font-noto-sans">{item}</span>
+                                        <span className="text-[13px] md:text-[14px] text-[#333333] font-noto-sans">{item}</span>
                                     </label>
                                 ))}
                             </div>
@@ -610,7 +610,7 @@ export default function SpeakerPartnerForm({ isOpen, onClose, onSubmit }: Speake
                         <button
                             type="button"
                             disabled={isFormInvalid || isSubmitting}
-                            className={`w-full h-[54px] text-white flex justify-center items-center text-[16px] font-semibold font-noto-sans transition-colors ${isFormInvalid || isSubmitting
+                            className={`w-full h-[48px] md:h-[54px] text-white flex justify-center items-center text-[15px] md:text-[16px] font-semibold font-noto-sans transition-colors ${isFormInvalid || isSubmitting
                                 ? 'bg-[#E4E4E7] text-[#ADADAD] cursor-not-allowed'
                                 : 'bg-[#7921B1] hover:bg-[#621B91]'
                                 }`}

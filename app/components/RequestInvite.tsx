@@ -196,7 +196,7 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
 
   return (
     <Accordion title="Request an Invite" isOpen={isOpen} onToggle={onToggle}>
-      <div className="space-y-4 p-2 ">
+      <div className="space-y-4 p-2 lg:py-20 lg:pl-16 lg:pr-16 ">
 
         {/* Intro text with light blue border */}
         <p className="text-[#897e7e] text-[15px] leading-[24px]">
@@ -226,263 +226,274 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
 
         {/* Form */}
         <form className="space-y-4">
-          {/* First Name */}
-          <div>
-            <label htmlFor="firstName" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              First Name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              autoComplete="given-name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Enter your First Name"
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
-              required
-            />
-          </div>
-
-          {/* Last Name */}
-          <div>
-            <label htmlFor="lastName" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              autoComplete="family-name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Enter your Last name"
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
-              required
-            />
-          </div>
-
-          {/* Work Email */}
-          <div>
-            <label htmlFor="workEmail" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              Work Email
-            </label>
-            <input
-              type="email"
-              id="workEmail"
-              name="workEmail"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your.email@company.com"
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
-              required
-            />
-          </div>
-
-          {/* WhatsApp */}
-          <div>
-            <label htmlFor="whatsapp" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              WhatsApp
-            </label>
-            <div className="flex gap-4">
-              <div className="relative w-24 dropdown-container">
-                <button
-                  type="button"
-                  onClick={() => toggleDropdown('countryCode')}
-                  className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
-                >
-                  <span className="text-black">{countryCode}</span>
-                  <svg
-                    className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {activeDropdown === 'countryCode' && (
-                  <div className="absolute z-50 left-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 w-[240px] max-h-60 overflow-y-auto custom-scrollbar">
-                    <div className="px-3 pb-2 sticky top-0 bg-white">
-                      <input
-                        type="text"
-                        placeholder="Search code..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-2 py-1.5 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
-                        autoFocus
-                      />
-                    </div>
-                    {filteredDialCodes.map((c, idx) => (
-                      <button
-                        key={`${c.dial_code}-${idx}`}
-                        type="button"
-                        onClick={() => {
-                          setCountryCode(c.dial_code);
-                          setActiveDropdown(null);
-                        }}
-                        className="w-full text-left px-4 py-2.5 text-[14px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans flex justify-between gap-2"
-                      >
-                        <span className="truncate">{c.name}</span>
-                        <span className="text-gray-400 shrink-0">{c.dial_code}</span>
-                      </button>
-                    ))}
-                    {filteredDialCodes.length === 0 && (
-                      <div className="px-4 py-2 text-[13px] text-gray-400">No results found</div>
-                    )}
-                  </div>
-                )}
-                <input type="hidden" name="countryCode" value={countryCode} />
-              </div>
+          {/* Row 1: First Name and Last Name - Desktop: side-by-side, Mobile: stacked */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-16">
+            {/* First Name */}
+            <div>
+              <label htmlFor="firstName" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                First Name
+              </label>
               <input
-                type="tel"
-                id="whatsapp"
-                name="whatsapp"
-                autoComplete="tel-national"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder="Enter your number"
-                className="flex-1 py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
+                type="text"
+                id="firstName"
+                name="firstName"
+                autoComplete="given-name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter your First Name"
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
+                required
+              />
+            </div>
+
+            {/* Last Name */}
+            <div>
+              <label htmlFor="lastName" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                autoComplete="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter your Last name"
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
                 required
               />
             </div>
           </div>
 
-          {/* Organisation */}
-          <div>
-            <label htmlFor="organisation" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              Organisation
-            </label>
-            <input
-              type="text"
-              id="organisation"
-              name="organisation"
-              autoComplete="organization"
-              value={organisation}
-              onChange={(e) => setOrganisation(e.target.value)}
-              placeholder="Enter your Organisation"
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
-              required
-            />
-          </div>
+          {/* Row 2: Work Email and WhatsApp - Desktop: side-by-side, Mobile: stacked */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-16">
+            {/* Work Email */}
+            <div>
+              <label htmlFor="workEmail" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                Work Email
+              </label>
+              <input
+                type="email"
+                id="workEmail"
+                name="workEmail"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your.email@company.com"
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
+                required
+              />
+            </div>
 
-          {/* Country */}
-          <div className="relative dropdown-container">
-            <label htmlFor="country" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              Country
-            </label>
-            <button
-              type="button"
-              onClick={() => toggleDropdown('country')}
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
-            >
-              <span className={country ? 'text-black' : 'text-gray-500'}>
-                {country || 'Select one'}
-              </span>
-              <svg
-                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'country' ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {activeDropdown === 'country' && (
-              <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-60 overflow-y-auto custom-scrollbar">
-                <div className="px-4 pb-2 sticky top-0 bg-white">
-                  <input
-                    type="text"
-                    placeholder="Search country..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
-                    autoFocus
-                  />
+            {/* WhatsApp */}
+            <div>
+              <label htmlFor="whatsapp" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                WhatsApp
+              </label>
+              <div className="flex gap-4">
+                <div className="relative w-24 dropdown-container">
+                  <button
+                    type="button"
+                    onClick={() => toggleDropdown('countryCode')}
+                    className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
+                  >
+                    <span className="text-black">{countryCode}</span>
+                    <svg
+                      className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {activeDropdown === 'countryCode' && (
+                    <div className="absolute z-50 left-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 w-[240px] max-h-60 overflow-y-auto custom-scrollbar">
+                      <div className="px-3 pb-2 sticky top-0 bg-white">
+                        <input
+                          type="text"
+                          placeholder="Search code..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full px-2 py-1.5 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
+                          autoFocus
+                        />
+                      </div>
+                      {filteredDialCodes.map((c, idx) => (
+                        <button
+                          key={`${c.dial_code}-${idx}`}
+                          type="button"
+                          onClick={() => {
+                            setCountryCode(c.dial_code);
+                            setActiveDropdown(null);
+                          }}
+                          className="w-full text-left px-4 py-2.5 text-[14px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans flex justify-between gap-2"
+                        >
+                          <span className="truncate">{c.name}</span>
+                          <span className="text-gray-400 shrink-0">{c.dial_code}</span>
+                        </button>
+                      ))}
+                      {filteredDialCodes.length === 0 && (
+                        <div className="px-4 py-2 text-[13px] text-gray-400">No results found</div>
+                      )}
+                    </div>
+                  )}
+                  <input type="hidden" name="countryCode" value={countryCode} />
                 </div>
-                {filteredCountries.map((c, idx) => (
-                  <button
-                    key={`${c.name}-${idx}`}
-                    type="button"
-                    onClick={() => {
-                      setCountry(c.name);
-                      setActiveDropdown(null);
-                    }}
-                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
-                  >
-                    {c.name}
-                  </button>
-                ))}
-                {filteredCountries.length === 0 && (
-                  <div className="px-4 py-3 text-[15px] text-gray-400">No results found</div>
-                )}
+                <input
+                  type="tel"
+                  id="whatsapp"
+                  name="whatsapp"
+                  autoComplete="tel-national"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="Enter your number"
+                  className="flex-1 py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
+                  required
+                />
               </div>
-            )}
-            <input type="hidden" name="country" value={country} />
+            </div>
           </div>
 
-          {/* Role / Designation */}
-          <div className="relative dropdown-container">
-            <label htmlFor="role" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
-              Role / Designation
-            </label>
-            <button
-              type="button"
-              onClick={() => toggleDropdown('role')}
-              className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
-            >
-              <span className={role ? 'text-black' : 'text-gray-500'}>
-                {role || 'Select one'}
-              </span>
-              <svg
-                className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'role' ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          {/* Row 3: Organisation and Role/Designation - Desktop: side-by-side, Mobile: stacked */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-16">
+            {/* Organisation */}
+            <div>
+              <label htmlFor="organisation" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                Organisation
+              </label>
+              <input
+                type="text"
+                id="organisation"
+                name="organisation"
+                autoComplete="organization"
+                value={organisation}
+                onChange={(e) => setOrganisation(e.target.value)}
+                placeholder="Enter your Organisation"
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black placeholder-[#897e7e] rounded-none"
+                required
+              />
+            </div>
+
+            {/* Role / Designation */}
+            <div className="relative dropdown-container">
+              <label htmlFor="role" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                Role / Designation
+              </label>
+              <button
+                type="button"
+                onClick={() => toggleDropdown('role')}
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+                <span className={role ? 'text-black' : 'text-gray-500'}>
+                  {role || 'Select one'}
+                </span>
+                <svg
+                  className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'role' ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-            {activeDropdown === 'role' && (
-              <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-[220px] overflow-y-auto custom-scrollbar">
-                {[
-                  'Founder / Co-Founder',
-                  'CEO / Managing Director',
-                  'Board Member / Investor',
-                  'Partner (VC / PE / Fund / Firm)',
-                  'CXO (CFO / CIO / CTO / COO / CRO)',
-                  'Senior Government Official',
-                  'Regulator / Policy Maker',
-                  'Banker / Financial Institution Leader',
-                  'Commodity / Trade Finance Professional',
-                  'Technology / AI Leader',
-                  'Academic / Researcher',
-                  'Advisor / Consultant',
-                  'Media / Journalist',
-                  'Other'
-                ].map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => {
-                      setRole(option);
-                      setActiveDropdown(null);
-                    }}
-                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-            <input type="hidden" name="role" value={role} />
+              {activeDropdown === 'role' && (
+                <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-[220px] overflow-y-auto custom-scrollbar">
+                  {[
+                    'Founder / Co-Founder',
+                    'CEO / Managing Director',
+                    'Board Member / Investor',
+                    'Partner (VC / PE / Fund / Firm)',
+                    'CXO (CFO / CIO / CTO / COO / CRO)',
+                    'Senior Government Official',
+                    'Regulator / Policy Maker',
+                    'Banker / Financial Institution Leader',
+                    'Commodity / Trade Finance Professional',
+                    'Technology / AI Leader',
+                    'Academic / Researcher',
+                    'Advisor / Consultant',
+                    'Media / Journalist',
+                    'Other'
+                  ].map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => {
+                        setRole(option);
+                        setActiveDropdown(null);
+                      }}
+                      className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <input type="hidden" name="role" value={role} />
+            </div>
           </div>
 
-          {/* Button section with overlapping circular button */}
-          <div className="flex">
+          {/* Row 4: Country - Half width on desktop, full width on mobile */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16">
+            <div className="relative dropdown-container">
+              <label htmlFor="country" className="block text-[13px] font-semibold text-black mb-2 font-noto-sans">
+                Country
+              </label>
+              <button
+                type="button"
+                onClick={() => toggleDropdown('country')}
+                className="w-full py-3 text-[16px] border-b border-gray-200 focus:outline-none focus:border-black bg-white text-left flex items-center justify-between"
+              >
+                <span className={country ? 'text-black' : 'text-gray-500'}>
+                  {country || 'Select one'}
+                </span>
+                <svg
+                  className={`w-3 h-3 text-[#9CA3AF] transform transition-transform ${activeDropdown === 'country' ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {activeDropdown === 'country' && (
+                <div className="absolute z-50 left-0 right-0 mt-1 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-gray-200 py-2 max-h-60 overflow-y-auto custom-scrollbar">
+                  <div className="px-4 pb-2 sticky top-0 bg-white">
+                    <input
+                      type="text"
+                      placeholder="Search country..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full px-3 py-2 text-[14px] border border-gray-100 focus:outline-none focus:border-[#7921B1] font-noto-sans"
+                      autoFocus
+                    />
+                  </div>
+                  {filteredCountries.map((c, idx) => (
+                    <button
+                      key={`${c.name}-${idx}`}
+                      type="button"
+                      onClick={() => {
+                        setCountry(c.name);
+                        setActiveDropdown(null);
+                      }}
+                      className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+                  {filteredCountries.length === 0 && (
+                    <div className="px-4 py-3 text-[15px] text-gray-400">No results found</div>
+                  )}
+                </div>
+              )}
+              <input type="hidden" name="country" value={country} />
+            </div>
+          </div>
+
+          {/* Button section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16">
             <button
               type="button"
               disabled={isSubmitting}
@@ -545,3 +556,4 @@ export default function RequestInvite({ isOpen, onToggle, hasSelectedSessions = 
     </Accordion>
   );
 }
+

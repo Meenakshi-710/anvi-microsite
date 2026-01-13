@@ -29,7 +29,7 @@ export default function SpeakerPartnerConfirmationModal({ isOpen, onClose }: Spe
             onClick={onClose}
         >
             <div
-                className="relative w-[calc(100%-48px)] max-w-[420px] bg-white px-8 py-[60px] shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300"
+                className="relative w-[calc(100%-48px)] max-w-[520px] md:max-w-[720px] bg-white px-6 md:px-12 py-[48px] md:py-[60px] shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Close Button */}
@@ -43,16 +43,16 @@ export default function SpeakerPartnerConfirmationModal({ isOpen, onClose }: Spe
 
                 {/* Content */}
                 <div className="flex flex-col space-y-6 pt-2">
-                    <h2 className="text-[#000000] text-[28px] font-bold leading-[36px] font-noto-sans">
+                    <h2 className="text-[#000000] text-[28px] md:text-[36px] font-bold leading-[36px] md:leading-[44px] font-noto-sans">
                         Thank you.
                     </h2>
 
                     <div className="space-y-4">
-                        <p className="text-[#666666] text-[16px] leading-[26px] font-noto-sans">
+                        <p className="text-[#666666] text-[15px] md:text-[16px] leading-[24px] md:leading-[26px] font-noto-sans">
                             For your interest in ANVI.
                         </p>
 
-                        <p className="text-[#ADADAD] text-[16px] leading-[26px] font-noto-sans">
+                        <p className="text-[#ADADAD] text-[15px] md:text-[16px] leading-[24px] md:leading-[26px] font-noto-sans">
                             Applications are reviewed by the ANVI leadership team. Selected contributors will be contacted directly.
                         </p>
                     </div>

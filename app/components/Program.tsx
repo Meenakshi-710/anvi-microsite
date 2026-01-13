@@ -256,43 +256,43 @@ export default function Program({ isOpen, onToggle, selectedSessions, onSessionT
 
   return (
     <Accordion title="Program" isOpen={isOpen} onToggle={onToggle}>
-      <div className="space-y-8">
+      <div className="space-y-8 lg:py-16 lg:px-18">
         {/* Header Section */}
-        <div className="space-y-4">
-          <h3 className="text-[#7921B1] font-semibold text-[13px] tracking-wider uppercase font-noto-sans">
+        <div className="space-y-4 lg:space-y-6">
+          <h3 className="text-[#7921B1] font-semibold text-[13px] lg:text-[14px] tracking-wider uppercase font-noto-sans">
             FIVE DAYS OF IMPACT
           </h3>
-          <p className="text-[#897e7e] text-[16px] font-noto-sans">
+          <p className="text-[#897e7e] text-[16px] lg:text-[18px] font-noto-sans">
             Leadership Roundtables • By Invitation Only
           </p>
-          <p className="text-[#7921B1] font-semibold text-[15px] font-noto-sans">
+          <p className="text-[#7921B1] font-semibold text-[15px] lg:text-[18px] font-noto-sans">
             ANVI INDIA × ANVI GLOBAL
           </p>
-          <p className="text-[#897e7e] text-[14px] font-noto-sans font-regular">
+          <p className="text-[#897e7e] text-[14px] lg:text-[16px] font-noto-sans font-regular">
             Real Assets • Digital Trust • Human Agency • New Financial Rails
           </p>
         </div>
 
         {/* Days Loop */}
         {PROGRAM_DATA.map((day, index) => (
-          <div key={index} className="space-y-3">
+          <div key={index} className="space-y-3 lg:space-y-6">
             {/* Day Header */}
-            <div>
+            <div className='lg:space-y-4'>
               <div className="flex items-center gap-4 mb-2">
-                <span className="text-[#7921B1] font-bold text-[14px] whitespace-nowrap font-noto-sans font-bold">{day.dayLabel}</span>
+                <span className="text-[#7921B1] font-bold text-[14px] lg:text-[15px] whitespace-nowrap font-noto-sans font-bold">{day.dayLabel}</span>
                 <div className="h-[1px] bg-gray-300 w-12"></div>
-                <span className="text-black font-bold text-[16px] font-noto-sans font-semibold">{day.date}</span>
+                <span className="text-black font-bold text-[16px] lg:text-[17px] font-noto-sans font-semibold">{day.date}</span>
               </div>
-              <p className="text-[#897e7e] text-[15px] leading-[24px] font-noto-sans font-regular">
+              <p className="text-[#897e7e] text-[15px] lg:text-[16px] leading-[24px] font-noto-sans font-regular">
                 {day.description}
               </p>
             </div>
 
             {/* Roundtables */}
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:pt-12">
               {day.sessions.map((session, sIndex) => (
-                <div key={sIndex} className="overflow-hidden">
-                  <div className="bg-[#EFEFEF] border-[#EFEFEF] border border-[1px] p-3 space-y-4">
+                <div key={sIndex} className="overflow-hidden flex flex-col">
+                  <div className="bg-[#EFEFEF] border-[#EFEFEF] border border-[1px] p-3 space-y-4 flex-grow">
                     <div className="space-y-1">
                       <h4 className="text-[#7921B1] font-bold text-[13px] tracking-wider uppercase font-noto-sans">
                         {session.type}
@@ -358,23 +358,26 @@ export default function Program({ isOpen, onToggle, selectedSessions, onSessionT
               </p>
             </div>
 
-            {/* Button */}
-            <button
-              onClick={onSubmitInterest}
-              disabled={!isSubmitEnabled}
-              className={`w-full text-white py-4 font-semibold text-[16px] transition-colors font-noto-sans ${isSubmitEnabled
-                ? 'bg-[#7921B1] hover:bg-[#6a1d9b] shadow-sm'
-                : 'bg-gray-300 cursor-not-allowed text-gray-500'
-                }`}
-            >
-              Submit Your Interest
-            </button>
+            {/* Buttons Container */}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-stretch lg:items-center">
+              {/* Button */}
+              <button
+                onClick={onSubmitInterest}
+                disabled={!isSubmitEnabled}
+                className={`w-full lg:w-[50%] lg:flex-1 text-white py-4 px-8 font-semibold text-[16px] transition-colors font-noto-sans ${isSubmitEnabled
+                  ? 'bg-[#7921B1] hover:bg-[#6a1d9b] shadow-sm'
+                  : 'bg-gray-300 cursor-not-allowed text-gray-500'
+                  }`}
+              >
+                Submit Your Interest
+              </button>
 
-            {/* Link */}
-            <div className="text-center">
-              <a href="/ANVI Program Agenda.pdf" download="ANVI Program Agenda" className="text-[#7921B1] text-[17px] font-semibold border-b border-[#7921B1] pb-0.5 hover:text-[#5f1a8b] transition-colors font-noto-sans">
-                Download Full Program
-              </a>
+              {/* Link */}
+              <div className="text-center lg:text-left lg:flex lg:items-center lg:w-[50%] justify-center">
+                <a href="/ANVI Program Agenda.pdf" download="ANVI Program Agenda" className="text-[#7921B1] text-[17px] font-semibold border-b border-[#7921B1] pb-0.5 hover:text-[#5f1a8b] transition-colors font-noto-sans whitespace-nowrap">
+                  Download Full Program
+                </a>
+              </div>
             </div>
 
           </div>
@@ -383,4 +386,5 @@ export default function Program({ isOpen, onToggle, selectedSessions, onSessionT
     </Accordion>
   );
 }
+
 

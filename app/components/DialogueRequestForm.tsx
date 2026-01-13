@@ -209,10 +209,10 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                     availabilityMappings
                 }
             });
-            
+
             // Record the submission to prevent duplicates
             recordSubmission('Dialogue Request', firstName, lastName);
-            
+
             setIsSubmitted(true);
             onSubmit();
         } catch (error) {
@@ -232,7 +232,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
             onClick={onClose}
         >
             <div
-                className="relative w-[calc(100%-48px)] max-w-[420px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100dvh-70px)] mb-4"
+                className="relative w-[calc(100%-48px)] max-w-[520px] md:max-w-[720px] bg-white shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 flex flex-col h-[calc(100dvh)]"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header with Close Button */}
@@ -247,8 +247,8 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                 </div>
 
                 {/* Form Content - Scrollable */}
-                <div className="flex-1 overflow-y-auto px-8 pt-12 custom-scrollbar" onScroll={() => setActiveDropdown(null)}>
-                    <h2 className="text-[#000000] text-[28px] font-semibold leading-[36px] font-noto-sans mb-8">
+                <div className="flex-1 overflow-y-auto px-6 md:px-12 pt-12 custom-scrollbar pb-8" onScroll={() => setActiveDropdown(null)}>
+                    <h2 className="text-[#000000] text-[24px] md:text-[32px] font-semibold leading-[32px] md:leading-[40px] font-noto-sans mb-6 md:mb-8">
                         Dialogue Request Form
                     </h2>
 
@@ -275,13 +275,13 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                         </div>
                     )}
 
-                    <form className="space-y-8 pb-16">
+                    <form className="space-y-6 md:space-y-8 pb-12 md:pb-16">
                         {/* Section: Identity */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase leading-[20px]">Identity</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase leading-[20px]">Identity</h3>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Full Name *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Full Name *</label>
                                 <input
                                     type="text"
                                     id="firstName"
@@ -290,12 +290,12 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
                                     placeholder="Enter your First Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Last Name *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Last Name *</label>
                                 <input
                                     type="text"
                                     id="lastName"
@@ -304,12 +304,12 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
                                     placeholder="Enter your Last Name"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Organisation *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Organisation *</label>
                                 <input
                                     type="text"
                                     id="organisation"
@@ -318,17 +318,17 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     value={organisation}
                                     onChange={(e) => setOrganisation(e.target.value)}
                                     placeholder="Enter your Organisation"
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none mt-2"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Title / Role *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Title / Role *</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('titleRole')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={titleRole ? 'text-black' : 'text-[#ADADAD]'}>
                                             {titleRole || 'Select one'}
@@ -345,7 +345,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                         setTitleRole(option);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                                                 >
                                                     {option}
                                                 </button>
@@ -356,12 +356,12 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Country *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Country *</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('country')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none"
                                     >
                                         <span className={country ? 'text-black' : 'text-[#ADADAD]'}>
                                             {country || 'Select one'}
@@ -391,7 +391,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                         setCountry(c.name);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors font-noto-sans"
                                                 >
                                                     {c.name}
                                                 </button>
@@ -405,7 +405,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Email *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Email *</label>
                                 <input
                                     type="email"
                                     id="email"
@@ -413,18 +413,18 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                     autoComplete="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
+                                    className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] focus:border-[#7921B1] outline-none mt-2 placeholder:text-[#ADADAD]"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">WhatsApp / Mobile *</label>
                                 <div className="flex gap-2 mt-2">
                                     <div className="relative min-w-[80px] dropdown-container">
                                         <button
                                             type="button"
                                             onClick={() => toggleDropdown('countryCode')}
-                                            className="w-full px-2 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
+                                            className="w-full px-2 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-center gap-1 focus:border-[#7921B1] outline-none"
                                         >
                                             <span className="text-black">{countryCode}</span>
                                             <ChevronDown className={`text-[#ADADAD] transition-transform ${activeDropdown === 'countryCode' ? 'rotate-180' : ''}`} size={14} />
@@ -472,7 +472,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                         placeholder="Enter your number"
-                                        className="flex-1 px-4 py-3 border border-[#E4E4E7] text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
+                                        className="flex-1 px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] font-noto-sans placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none"
                                     />
                                 </div>
                             </div>
@@ -480,15 +480,15 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
 
                         {/* Section: Dialogue Context */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold font-noto-sans uppercase">Dialogue Context</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold font-noto-sans uppercase">Dialogue Context</h3>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Who are you?</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Who are you?</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('whoAreYou')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
                                     >
                                         <span className={whoAreYou ? 'text-black' : 'text-[#ADADAD]'}>
                                             {whoAreYou || 'Select one'}
@@ -505,7 +505,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                         setWhoAreYou(option);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
                                                 >
                                                     {option}
                                                 </button>
@@ -516,7 +516,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                             </div>
 
                             <div className="space-y-4">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333] block">What would you like to discuss?</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333] block">What would you like to discuss?</label>
                                 <div className="space-y-3">
                                     {[
                                         'AI-powered Financial Inclusion',
@@ -541,19 +541,19 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                                 </svg>
                                             </div>
-                                            <span className="text-[14px] text-[#333333] transition-colors">{item}</span>
+                                            <span className="text-[13px] md:text-[14px] text-[#333333] transition-colors">{item}</span>
                                         </label>
                                     ))}
                                 </div>
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333]">Preferred Track</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333]">Preferred Track</label>
                                 <div className="relative mt-2 dropdown-container">
                                     <button
                                         type="button"
                                         onClick={() => toggleDropdown('preferredTrack')}
-                                        className="w-full px-4 py-3 border border-[#E4E4E7] text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
+                                        className="w-full px-3 md:px-4 py-2.5 md:py-3 border border-[#E4E4E7] text-[14px] md:text-[15px] bg-white text-left flex items-center justify-between focus:border-[#7921B1] outline-none font-noto-sans"
                                     >
                                         <span className={preferredTrack ? 'text-black' : 'text-[#ADADAD]'}>
                                             {preferredTrack || 'Select one'}
@@ -570,7 +570,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                         setPreferredTrack(option);
                                                         setActiveDropdown(null);
                                                     }}
-                                                    className="w-full text-left px-4 py-3 text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
+                                                    className="w-full text-left px-3 md:px-4 py-2.5 md:py-3 text-[14px] md:text-[15px] text-gray-800 hover:bg-gray-50 transition-colors"
                                                 >
                                                     {option}
                                                 </button>
@@ -583,16 +583,16 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
 
                         {/* Section: Intent */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold uppercase tracking-wider font-noto-sans">Intent</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold uppercase tracking-wider font-noto-sans">Intent</h3>
 
                             <div className="space-y-4">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333] block">Primary Objective</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333] block">Primary Objective</label>
                                 <div className="space-y-2">
                                     <textarea
                                         value={primaryObjective}
                                         onChange={(e) => setPrimaryObjective(e.target.value)}
                                         placeholder="E.g., Exploring Investment Opportunities, Exploring partnership on inclusion pilots, Discussing trade finance capital structures..."
-                                        className="w-full p-4 border border-[#E4E4E7] text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none resize-none min-h-[120px]"
+                                        className="w-full p-3 md:p-4 border border-[#E4E4E7] text-[14px] md:text-[15px] placeholder:text-[#ADADAD] focus:border-[#7921B1] outline-none resize-none min-h-[100px] md:min-h-[120px]"
                                     ></textarea>
                                     <div className="flex justify-between">
                                         <span className="text-[13px] font-noto-sans text-[#ADADAD] block">{primaryObjective.length}/300 characters</span>
@@ -601,7 +601,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                             </div>
 
                             <div className="space-y-4">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333] block">Are you open to:</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333] block">Are you open to:</label>
                                 <div className="space-y-3 font-noto-sans">
                                     {[
                                         '1:1 dialogue',
@@ -620,7 +620,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                                 </svg>
                                             </div>
-                                            <span className="text-[14px] text-[#333333]">{item}</span>
+                                            <span className="text-[13px] md:text-[14px] text-[#333333]">{item}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -629,10 +629,10 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
 
                         {/* Section: Availability */}
                         <div className="space-y-6">
-                            <h3 className="text-[#7921B1] text-[14px] font-bold uppercase font-noto-sans">Availability</h3>
+                            <h3 className="text-[#7921B1] text-[13px] md:text-[14px] font-bold uppercase font-noto-sans">Availability</h3>
 
                             <div className="space-y-4">
-                                <label className="text-[14px] font-semibold font-noto-sans text-[#333333] block">Available dates & time preference</label>
+                                <label className="text-[13px] md:text-[14px] font-semibold font-noto-sans text-[#333333] block">Available dates & time preference</label>
                                 <div className="space-y-4">
                                     {[
                                         'January 19',
@@ -662,7 +662,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                                     </svg>
                                                 </div>
-                                                <span className="text-[14px] font-noto-sans text-[#333333]">
+                                                <span className="text-[13px] md:text-[14px] font-noto-sans text-[#333333]">
                                                     {date === 'January 19' ? 'Jan 19' :
                                                         date === 'January 20' ? 'Jan 20' :
                                                             date === 'January 21' ? 'Jan 21' :
@@ -675,7 +675,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                     type="button"
                                                     disabled={!availabilityMappings[date]}
                                                     onClick={() => toggleDropdown(`time-${date}`)}
-                                                    className={`w-full h-[44px] border border-gray-200 px-4 flex items-center justify-between text-[14px] font-noto-sans transition-opacity ${!availabilityMappings[date] ? 'opacity-50 cursor-not-allowed' : 'bg-white opacity-100'}`}
+                                                    className={`w-full h-[40px] md:h-[44px] border border-gray-200 px-3 md:px-4 flex items-center justify-between text-[13px] md:text-[14px] font-noto-sans transition-opacity ${!availabilityMappings[date] ? 'opacity-50 cursor-not-allowed' : 'bg-white opacity-100'}`}
                                                 >
                                                     <span className={availabilityMappings[date] && availabilityMappings[date] !== 'Select one' ? 'text-black' : 'text-[#ADADAD]'}>
                                                         {availabilityMappings[date] || 'Select one'}
@@ -695,7 +695,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                                                                     });
                                                                     setActiveDropdown(null);
                                                                 }}
-                                                                className="w-full text-left px-4 py-2.5 text-[14px] text-gray-800 hover:bg-gray-50 transition-colors"
+                                                                className="w-full text-left px-3 md:px-4 py-2 md:py-2.5 text-[13px] md:text-[14px] text-gray-800 hover:bg-gray-50 transition-colors"
                                                             >
                                                                 {option}
                                                             </button>
@@ -712,7 +712,7 @@ export default function DialogueRequestForm({ isOpen, onClose, onSubmit }: Dialo
                         <button
                             type="button"
                             disabled={isFormInvalid || isSubmitting}
-                            className={`w-full h-[54px] text-white flex justify-center items-center text-[16px] font-semibold font-noto-sans transition-colors ${isFormInvalid || isSubmitting
+                            className={`w-full h-[48px] md:h-[54px] text-white flex justify-center items-center text-[15px] md:text-[16px] font-semibold font-noto-sans transition-colors ${isFormInvalid || isSubmitting
                                 ? 'bg-[#E4E4E7] text-[#ADADAD] cursor-not-allowed'
                                 : 'bg-[#7921B1] hover:bg-[#621B91]'
                                 }`}
